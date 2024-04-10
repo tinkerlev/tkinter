@@ -1,0 +1,43 @@
+#luai 11:05
+
+
+import tkinter as tk
+from tkinter import messagebox
+import pyotp
+
+def verify_code():
+    """
+    Verify the user input OTP against the TOTP object.
+    """
+    user_input = entry.get()
+    if totp.verify(user_input):
+        messagebox.showinfo("Verification", "Verification succeeded.")
+    else:
+        messagebox.showerror("Verification", "Verification failed, try again.")
+
+# Generating a secret key for TOTP. In a real application, this would be securely stored and unique to each user.
+secret = pyotp.random_base32()
+totp = pyotp.TOTP(secret)
+
+def setup_gui():
+    """
+    Setup the GUI for two-step verification using Tkinter.
+    """
+    # Creating the main window
+    root = tk.Tk()
+    root.title("Two-Step Verification")
+
+    # Adding an entry field for typing the OTP
+    global entry
+    entry = tk.Entry(root)
+    entry.pack(pady=10)
+
+    # Adding a button to verify the OTP
+    verify_button = tk.Button(root, text="Verify Code", command=verify_code)
+    verify_button.pack(pady=5)
+
+    # Display the window
+    root.mainloop()
+
+# Example usage
+# setup_gui()
